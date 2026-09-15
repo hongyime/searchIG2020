@@ -1,33 +1,11 @@
-# AUDIT.md — searchIG2020
+# Audit — searchIG2020
 
-Generated: 20260524
+Updated: 2026-09-15
 
-## 0. FILESYSTEM HEALTH REPORT
-No corrupted, orphaned, or sync artifact files detected.
+The original source declared no third-party dependencies but imported a search provider, opened urls.txt in truncation mode at import and called an incompatible `pause` keyword. The isolated regression run reproduced that TypeError before any query could execute; it created only an empty output fixture in the disposable checkout. No retained result list was accessed.
 
-## 1. MASTER FEATURE MAP
-| File | Purpose | Key Functions |
-|------|---------|---------------|| scrape instagram code.py | Source file | (see source) |
+The repair pins the documented provider API, requires explicit keywords, defers all execution to the CLI and verifies dependency compatibility before creating output. One candidate budget and a timed worker bound provider execution. Output uses exclusive creation and retains already written URLs after interruption, deadline or provider failure. The old per-result delay is removed while page and keyword pacing remain.
 
-## 2. RECONCILIATION SUMMARY
-Small utility project. Documentation matches implementation.
+All 18 offline tests pass locally on Python 3.12. The installed dependency parser is checked against a synthetic HTML response. Tests also cover a complete CLI/worker round trip, malformed and non-Instagram results, existing/racing outputs, HTTP failure, import behavior, dependency failure and a real worker timeout with partial output retained. All nine installed packages are compatible. Hosted Linux/Windows checks are required before release.
 
-## 3-5. GAPS / GHOSTS / DRIFT
-None identified for this project scope.
-
-## 6. DATA INTEGRITY
-N/A — no databases.
-
-## 7. CODE QUALITY FINDINGS
-| Tag | Description | Severity |
-|-----|-------------|----------|
-| [DEAD] | No dead code detected | N/A |
-
-## 8. STRUCTURAL REORGANIZATION
-No reorganization needed — structure appropriate for project size.
-
-## 9. PRODUCTION READINESS
-N/A — personal/educational utility, not a production service.
-
-## 10. REMEDIATION ROADMAP
-No remediation actions required.
+The repository's actual default branch is master, despite stale generic contribution guidance naming main. CONTRIBUTING and the repository override now identify master. The existing label workflow is corrected to use its actual labels.yml configuration. Original source/data files remain preserved. No live Google/Instagram query or stored result-list read was performed, and no Vercel CPU or monthly quota saving is claimed.

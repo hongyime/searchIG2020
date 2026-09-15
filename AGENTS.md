@@ -101,6 +101,10 @@ Memory tools such as cognee or cavemem are optional local aids. Trust
 
 ## Repository-Specific Overrides
 
+### searchIG2020
+- The default and release branch is `master`. Open typed feature/fix branches from `master` and target it in PRs.
+- This override takes precedence over generic Git examples that name `main`. Keep Conventional Commits and the existing four-section PR template.
+
 ### source-repo-code (Template/Source)
 - **Purpose**: Source of truth for shared configurations
 - **Special Rules**: Changes here should be synced to all repos
