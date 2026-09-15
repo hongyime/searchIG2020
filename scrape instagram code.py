@@ -7,7 +7,8 @@ from itertools import islice
 import math
 import os
 from pathlib import Path
-import subprocess
+# Required for the bounded worker; executable and argv are checked below.
+import subprocess  # nosec B404
 import sys
 import time
 from typing import Callable, Iterable, TextIO
@@ -65,11 +66,18 @@ def run_worker(command: list[str], output: Path, deadline: float) -> subprocess.
     """Run one owned worker; subprocess.run kills and waits for it on timeout."""
     if os.path.lexists(output):
         raise FileExistsError(f'Output already exists; choose a new path: {output}')
+    if (not isinstance(command, list) or not command or not all(isinstance(arg, str) for arg in command)
+            or not Path(command[0]).is_absolute()
+            or Path(command[0]).resolve() != Path(sys.executable).resolve()):
+        raise ValueError('Worker executable must be the current absolute Python interpreter')
     with output.open('x', encoding='utf-8', newline='\n') as handle:
         try:
-            return subprocess.run(command, stdin=subprocess.DEVNULL, stdout=handle,
+            # The CLI builds a fixed script path and separate --keyword= arguments.
+            # No shell parses those values; tests cover literal metacharacters.
+            return subprocess.run(  # nosec B603
+                                  command, stdin=subprocess.DEVNULL, stdout=handle,
                                   stderr=subprocess.PIPE, text=True, encoding='utf-8',
-                                  errors='replace', timeout=deadline, check=False,
+                                  errors='replace', timeout=deadline, check=False, shell=False,
                                   creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
         finally:
             handle.flush()

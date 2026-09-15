@@ -57,7 +57,7 @@ python -m pip check
 python -B -m unittest discover -s tests -v
 ```
 
-All 18 tests use synthetic URLs, local provider/HTML fixtures and owned temporary worker processes. They cover the installed parser and request options, candidate limits, output races, missing dependencies, interruption, HTTP errors and a real three-second worker deadline. No live queries, profile requests or existing result lists are used. Hosted Linux and Windows checks run on PRs and the default `master` branch.
+All 19 tests use synthetic URLs, local provider/HTML fixtures and owned temporary worker processes. They cover the installed parser and request options, candidate limits, output races, missing dependencies, interruption, HTTP errors and a real three-second worker deadline. No live queries, profile requests or existing result lists are used. Hosted Linux and Windows checks run on PRs and the default `master` branch.
 
 ## License
 

@@ -95,8 +95,14 @@ class SearchTests(unittest.TestCase):
                     f.write('concurrent original')
             return original(path, mode, *args, **kwargs)
         with patch.object(Path, 'open', new=race), self.assertRaises(FileExistsError):
-            app.run_worker(['unused'], self.output, 1)
+            app.run_worker([sys.executable, '-c', 'pass'], self.output, 1)
         self.assertEqual(self.output.read_text(), 'concurrent original')
+
+    def test_other_executables_and_command_strings_are_rejected_before_output(self):
+        for command in ['python -c pass', [], ['python', '-c', 'pass'], ['/bin/sh', '-c', 'echo fixture']]:
+            with self.subTest(command=command), self.assertRaises(ValueError):
+                app.run_worker(command, self.output, 1)
+            self.assertFalse(self.output.exists())
 
     def test_real_worker_deadline_keeps_partial_output(self):
         command = [sys.executable, '-c', 'import time; print("https://instagram.com/fixture/", flush=True); time.sleep(30)']
@@ -129,11 +135,11 @@ class SearchTests(unittest.TestCase):
 
     def test_cli_worker_round_trip_with_a_local_provider_fixture(self):
         (self.root / 'googlesearch.py').write_text('''def search(term, num_results=10, lang='en', sleep_interval=0, timeout=5):
-    assert term == 'site:instagram.com "-topic"'
+    assert term == 'site:instagram.com "-topic & echo unexpected"'
     assert num_results == 1 and timeout == 10 and sleep_interval == 10
     yield 'https://www.instagram.com/fixture/'
 ''', encoding='utf-8')
-        result = subprocess.run([sys.executable, '-B', str(SCRIPT), '--keyword=-topic', '--limit', '1', '--output', str(self.output)],
+        result = subprocess.run([sys.executable, '-B', str(SCRIPT), '--keyword=-topic & echo unexpected', '--limit', '1', '--output', str(self.output)],
                                 cwd=self.root, env={**os.environ, 'PYTHONPATH': str(self.root)}, capture_output=True, text=True, timeout=15)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(self.output.read_text(), 'https://www.instagram.com/fixture/\n')

@@ -2,9 +2,10 @@
   "task": "Bound search execution and preserve existing and partial output",
   "branch": "fix/search-output-preservation",
   "base": "master",
-  "validation": "18 offline tests and nine-package compatibility pass; hosted checks required",
+  "validation": "19 offline tests and nine-package compatibility pass; hosted checks required",
   "limits": "20 candidate results and 60-second worker deadline by default; maxima 100 candidates and 300 seconds; 10-second request timeout/page and keyword delay",
   "data": "No live queries or stored result-list access. Existing destinations are refused; partial output retained. No automatic resume.",
   "conventions": "Actual default master confirmed from GitHub; stale CONTRIBUTING main target corrected and AGENTS override added",
-  "scope": "Local CLI and static source publication; no Vercel trigger or database migration"
+  "scope": "Local CLI and static source publication; no Vercel trigger or database migration",
+  "security_review": "B404/B603 line-specific annotations for the fixed Python worker, explicit shell=False and separate keyword argv; alternative executables rejected and literal metacharacters tested; Bandit clean"
 }

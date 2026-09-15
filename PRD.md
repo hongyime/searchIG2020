@@ -19,6 +19,6 @@ Profile-content scraping, automated Instagram actions, live monitoring, exhausti
 
 ## Runtime and verification
 
-Python 3.11+; install requirements.txt in a clean environment. The repository default and PR target is `master`; feature branches use the repository's typed naming convention. Eighteen offline tests cover the real dependency parser with an HTML fixture, CLI-worker integration, bounded results, preservation and a real worker timeout. Required Linux/Windows checks gate release. GitHub Pages hosts static documentation/source; there is no linked Vercel runtime or application database.
+Python 3.11+; install requirements.txt in a clean environment. The repository default and PR target is `master`; feature branches use the repository's typed naming convention. Nineteen offline tests cover the real dependency parser with an HTML fixture, CLI-worker integration, bounded results, preservation and a real worker timeout. Required Linux/Windows checks gate release. GitHub Pages hosts static documentation/source; there is no linked Vercel runtime or application database.
 
 Live provider availability and results are unverified by these offline checks. See README for CLI examples, exact limits, exit codes and recovery behavior.
