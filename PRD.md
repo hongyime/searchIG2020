@@ -1,41 +1,24 @@
 # PRD: searchIG2020
 
-## Overview
-A Python script that uses Google search to discover Instagram profiles matching specific bio keywords. Constructs targeted Google dorks (`site:instagram.com inbio:keyword`) to find Instagram users with particular interests, and saves discovered profile URLs to a text file. Built in 2020 for OSINT/research purposes.
+## Purpose
 
-## Goals
-- Accept a list of target keywords
-- Construct Google search queries targeting Instagram profiles
-- Extract Instagram profile URLs from search results
-- Save discovered URLs to output file
+A local CLI searches Google for public Instagram URLs matching explicitly supplied keywords and writes returned URLs to a fresh text file. The script does not fetch profile content, verify biography fields or provide a web application.
 
-## Non-Goals
-- Scraping Instagram profile content (followers, posts, DMs)
-- Automated follow/like/comment actions
-- Real-time monitoring
+## Behavior
 
-## User Stories
-- As a researcher, I want to find Instagram users who mention a specific interest in their bio.
-- As a marketer, I want to discover potential influencers in a niche via keyword search.
+- Require one to five explicit keywords; construct `site:instagram.com "keyword"` queries.
+- Use the pinned `googlesearch-python` API, retaining English results and ten-second page pacing.
+- Share one candidate budget across keywords: default 20, maximum 100. Only HTTP/HTTPS Instagram URLs are saved; order and duplicate occurrences are retained.
+- Bound the entire search worker with a default 60-second deadline (maximum 300). Requests have a ten-second timeout. Keyword transitions also wait ten seconds.
+- Write UTF-8 lines progressively. Refuse any existing destination, including one appearing after preflight; retain partial results on interruption, timeout or failure.
+- Import and help must be inert. Verify dependency compatibility before opening output.
 
-## Tech Stack
-- **Language**: Python 3.x
-- **Libraries**: `requests` or `selenium`, `BeautifulSoup` (scraping Google results)
+## Non-goals
 
-## Architecture
-```
-searchIG2020/
-└── scrape instagram code.py   # Main scraper
-```
+Profile-content scraping, automated Instagram actions, live monitoring, exhaustive results, automatic resume, automatic retries and bypassing provider blocks are outside this utility's scope. The application does not treat an empty provider response as proof that no matching URLs exist.
 
-## Deployment / Run
-```bash
-pip install -r requirements.txt
-python "scrape instagram code.py"
-```
+## Runtime and verification
 
-## Constraints & Notes
-- **Legal**: Instagram's Terms of Service prohibit automated scraping; Google Search also prohibits automated queries — use only for personal/research purposes
-- **Google reCAPTCHA**: automated Google queries are likely to hit captchas; script may require manual intervention or proxy rotation
-- **Instagram scraping**: profile content beyond what appears in Google snippets requires Instagram session — this script targets Google results, not Instagram directly
-- **2020 accuracy**: Google's `inbio:` operator behavior may have changed; accuracy of results not guaranteed
+Python 3.11+; install requirements.txt in a clean environment. The repository default and PR target is `master`; feature branches use the repository's typed naming convention. Nineteen offline tests cover the real dependency parser with an HTML fixture, CLI-worker integration, bounded results, preservation and a real worker timeout. Required Linux/Windows checks gate release. GitHub Pages hosts static documentation/source; there is no linked Vercel runtime or application database.
+
+Live provider availability and results are unverified by these offline checks. See README for CLI examples, exact limits, exit codes and recovery behavior.

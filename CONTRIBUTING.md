@@ -7,7 +7,7 @@ Thanks for your interest in contributing!
 1. Fork the repo
 2. Create a feature branch: `git checkout -b feat/your-feature`
 3. Commit using [Conventional Commits](https://www.conventionalcommits.org): `feat:`, `fix:`, `chore:`, `docs:`, etc.
-4. Open a pull request against `main`
+4. Open a pull request against `master` (this repository's default branch)
 
 ## Guidelines
 
