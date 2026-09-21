@@ -5,6 +5,13 @@
 
 
 
+
+# Local search results, environments and bytecode
+.venv/
+__pycache__/
+*.py[cod]
+/urls.txt
+
 # AI / editor dot directories (managed via sourcerepo)
 .*
 !.github/
@@ -40,9 +47,3 @@ skills/
 skills-lock.json
 docs/
 # End AI / editor dot directories (managed via sourcerepo)
-
-# Local search results, environments and bytecode
-.venv/
-__pycache__/
-*.py[cod]
-/urls.txt
