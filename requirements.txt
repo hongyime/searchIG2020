@@ -1,1 +1,1 @@
-# No third-party dependencies - uses Python standard library only (random, time)
+googlesearch-python==1.3.0
